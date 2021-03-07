@@ -1,17 +1,10 @@
 from PIL import Image, ImageFilter, ImageDraw
-import random
-import os
-
-
-def xline(draw, y, width):
-    for x in range(width):
-        draw.point((x, y), (0, 0, 0))
-
 
 image = Image.open('./test.png')
 pix = image.load()
-print(image.format, image.size, image.mode)
-print(image.size[0], image.size[1])
+
+print(f'{image.format=}', f'{image.size=}', f'{image.mode=}')
+print('Размер изображения', image.size[0], image.size[1])
 
 draw = ImageDraw.Draw(image)
 
@@ -20,7 +13,7 @@ height = image.size[1]  # Определяем высоту
 
 up, bottom, left, right = 0, 0, 0, 0
 color = [pix[1, 1][0], pix[1, 1][1], pix[1, 1][2]]
-print(f'{color=}')
+print('Цвет пикселя (1,1)', f'{color=}')
 
 for y in range(height):
     if not up:
@@ -34,7 +27,7 @@ for y in reversed(range(height)):
     if not bottom:
         for x in range(width):
             if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
-                bottom = y + 1
+                bottom = y + 2
                 break
 
 for x in range(width):
@@ -47,10 +40,10 @@ for x in reversed(range(width)):
     if not right:
         for y in range(height):
             if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
-                right = x + 1
+                right = x + 2
                 break
 
-print(f'{up=}', f'{bottom=}', f'{left=}', f'{right=}', )
-image.save("result.jpg", "JPEG")
+print('Координаты обрезки', f'{up=}', f'{bottom=}', f'{left=}', f'{right=}', )
+image_crop = image.crop((left, up, right, bottom))
+image_crop.save("result_crop.jpg", "JPEG")
 
-# draw.point((x, y), (0, 0, random.randint(1, 255)))  # рисуем пиксель
