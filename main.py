@@ -1,11 +1,11 @@
 import sys
 
 from PIL import Image, ImageFilter, ImageDraw
+from pathlib import Path
 
 
-def crop(image):
+def crop(image, new_filename):
     pix = image.load()
-
     print(f'{image.format=}', f'{image.size=}', f'{image.mode=}')
     print('Размер изображения', image.size[0], image.size[1])
 
@@ -48,14 +48,22 @@ def crop(image):
 
     print('Координаты обрезки', f'{up=}', f'{bottom=}', f'{left=}', f'{right=}', )
     image_crop = image.crop((left, up, right, bottom))
-    image_crop.save("result_crop.png", "PNG")
+    image_crop.save(f'{new_filename}', "PNG")
+
+
+def get_new_filename(file_path):
+    p = Path(file_path)
+    return p.parent.joinpath(p.stem + '_crop' + '.png')
 
 
 if __name__ == "__main__":
     try:
         file_path = sys.argv[1]
         image = Image.open(file_path)
-        crop(image=image)
+        new_filename = get_new_filename(file_path)
+        print('\n===============!!===============')
+        print(f'Пациент - {file_path}')
+        crop(image=image, new_filename=new_filename)
 
     except IndexError as e:
         print(f"Write path to your file as in the example")
