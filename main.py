@@ -1,6 +1,6 @@
 import sys
 
-from PIL import Image, ImageFilter, ImageDraw
+from PIL import Image
 from pathlib import Path
 
 
@@ -8,8 +8,6 @@ def crop(image, new_filename):
     pix = image.load()
     print(f'{image.format=}', f'{image.size=}', f'{image.mode=}')
     print('Размер изображения', image.size[0], image.size[1])
-
-    draw = ImageDraw.Draw(image)
 
     width = image.size[0]  # Определяем ширину
     height = image.size[1]  # Определяем высоту
@@ -46,7 +44,7 @@ def crop(image, new_filename):
                     right = x + 2
                     break
 
-    print('Координаты обрезки', f'{up=}', f'{bottom=}', f'{left=}', f'{right=}', )
+    print('Координаты обрезки', f'{up=} {bottom=} {left=} {right=}')
     image_crop = image.crop((left, up, right, bottom))
     image_crop.save(f'{new_filename}', "PNG")
 
@@ -66,8 +64,8 @@ if __name__ == "__main__":
         crop(image=image, new_filename=new_filename)
 
     except IndexError as e:
-        print(f"Write path to your file as in the example")
+        print(f"Write path to your file as in the example.\n{e=}")
     except FileNotFoundError as e:
-        print(f"No such file or directory: {file_path}")
+        print(f"No such file or directory: {file_path} \n{e=}")
     except Exception as e:
         print(e)
