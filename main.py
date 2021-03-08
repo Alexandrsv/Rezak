@@ -52,13 +52,14 @@ def crop(image):
 
 
 if __name__ == "__main__":
-    file_path = sys.argv[1]
     try:
+        file_path = sys.argv[1]
         image = Image.open(file_path)
+        crop(image=image)
+
+    except IndexError as e:
+        print(f"Write path to your file as in the example")
     except FileNotFoundError as e:
-        print(f"No such file or directory: {5}")
-    else:
-        try:
-            crop(image=image)
-        except Exception as e:
-            print(e)
+        print(f"No such file or directory: {file_path}")
+    except Exception as e:
+        print(e)
