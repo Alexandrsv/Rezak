@@ -28,7 +28,7 @@ def crop(image, new_filename):
         if not bottom:
             for x in range(width):
                 if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
-                    bottom = y + 2
+                    bottom = y + 1
                     break
 
     for x in range(width):
@@ -41,7 +41,7 @@ def crop(image, new_filename):
         if not right:
             for y in range(height):
                 if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
-                    right = x + 2
+                    right = x + 1
                     break
 
     print('Координаты обрезки', f'{up=} {bottom=} {left=} {right=}')
