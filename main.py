@@ -12,12 +12,12 @@ def crop(image, new_filename):
     width = image.size[0]  # Определяем ширину
     height = image.size[1]  # Определяем высоту
 
-    up, bottom, left, right = 0, 0, 0, 0
+    up, bottom, left, right = -1, -1, -1, -1
     color = [pix[1, 1][0], pix[1, 1][1], pix[1, 1][2]]
     print('Цвет пикселя (1,1)', f'{color=}')
 
     for y in range(height):
-        if not up:
+        if up < 0:
             for x in range(width):
                 # print('2', x, y, [pix[x, y][0], pix[x, y][1], pix[x, y][2]])
                 if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
@@ -25,20 +25,20 @@ def crop(image, new_filename):
                     break
 
     for y in reversed(range(height)):
-        if not bottom:
+        if bottom < 0:
             for x in range(width):
                 if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
                     bottom = y + 1
                     break
 
     for x in range(width):
-        if not left:
+        if left < 0:
             for y in range(height):
                 if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
                     left = x - 1
                     break
     for x in reversed(range(width)):
-        if not right:
+        if right < 0:
             for y in range(height):
                 if color != [pix[x, y][0], pix[x, y][1], pix[x, y][2]]:
                     right = x + 1
