@@ -1,8 +1,30 @@
+"""Справка программы Резак.
+Usage:
+  main.py [-h] [--sensitivity=SENS]
+          [--postfix=POSTFIX]
+          [--void=PIXEL | --color=COLOR]
+          FILES...
+
+Arguments:
+  FILES  Файлы для обработки, обязательный параметр, можно указывать несколько
+
+Options:
+  -h --help                 Показать эту справку
+  --sensitivity=SENS        Чувствительность алгоритма. от 1 до 128, 1 - максимальная [default: 1]
+  --void=PIXEL              Координаты пикселя из рамки [default: 1,1]
+  --postfix=POSTFIX         Координаты пикселя из рамки [default: crop]
+  --color=COLOR             Цвет рамки HEX  [default: False]
+
+Example, try:
+  main.py --postfix=crop --sensitivity=2 --void=1,1 ./demo.png ./demo2.png
+  main.py ./demo.png
+"""
+
 import sys
 
 from PIL import Image
 from pathlib import Path
-
+from docopt import docopt
 
 def crop(image, new_filename):
     pix = image.load()
@@ -49,18 +71,20 @@ def crop(image, new_filename):
     image_crop.save(f'{new_filename}', "PNG")
 
 
-def get_new_filename(file_path):
-    p = Path(file_path)
-    return p.parent.joinpath(p.stem + '_crop' + '.png')
+def get_new_filename(path, postfix):
+    return path.parent.joinpath(f'{path.stem}_{postfix}.png')
 
 
 if __name__ == "__main__":
-    file_path = Path(sys.argv[1])
+    arguments = docopt(__doc__)
+    print(arguments)
+    # file_path = Path(sys.argv[1])
+    file_path = Path(arguments['FILES'][0])
     if not file_path.is_file():
         print(f"No such file or directory: {file_path}. Are u wrote it as in example? ")
 
     image = Image.open(file_path)
-    new_filename = get_new_filename(file_path)
+    new_filename = get_new_filename(file_path, arguments['--postfix'])
     print('\n===============!!===============')
     print(f'Пациент - {file_path}')
     crop(image=image, new_filename=new_filename)
