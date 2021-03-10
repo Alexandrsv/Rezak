@@ -55,17 +55,12 @@ def get_new_filename(file_path):
 
 
 if __name__ == "__main__":
-    try:
-        file_path = sys.argv[1]
-        image = Image.open(file_path)
-        new_filename = get_new_filename(file_path)
-        print('\n===============!!===============')
-        print(f'Пациент - {file_path}')
-        crop(image=image, new_filename=new_filename)
+    file_path = Path(sys.argv[1])
+    if not file_path.is_file():
+        print(f"No such file or directory: {file_path}. Are u wrote it as in example? ")
 
-    except IndexError as e:
-        print(f"Write path to your file as in the example.\n{e=}")
-    except FileNotFoundError as e:
-        print(f"No such file or directory: {file_path} \n{e=}")
-    except Exception as e:
-        print(e)
+    image = Image.open(file_path)
+    new_filename = get_new_filename(file_path)
+    print('\n===============!!===============')
+    print(f'Пациент - {file_path}')
+    crop(image=image, new_filename=new_filename)
